@@ -18,6 +18,7 @@ public class ContactMessageController {
     @PostMapping("/save") // http://localhost:8080/contactMessages/save + POST + JSON
     public ResponseMessage<ContactMessage> save(){
         //TODO: to be continued..
+        //dto-mapper should be created after here
         return null;
     }
 
