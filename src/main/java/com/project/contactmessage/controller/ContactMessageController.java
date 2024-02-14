@@ -1,12 +1,17 @@
 package com.project.contactmessage.controller;
 
+import com.project.contactmessage.dto.ContactMessageRequest;
+import com.project.contactmessage.dto.ContactMessageResponse;
 import com.project.contactmessage.entity.ContactMessage;
 import com.project.contactmessage.service.ContactMessageService;
 import com.project.payload.response.business.ResponseMessage;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.apache.coyote.Response;
+import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/contactMessages")
@@ -16,13 +21,41 @@ public class ContactMessageController {
     private final ContactMessageService contactMessageService;
 
     @PostMapping("/save") // http://localhost:8080/contactMessages/save + POST + JSON
-    public ResponseMessage<ContactMessage> save(){
-        //TODO: to be continued..
-        //dto-mapper should be created after here)
-        return null;
+    public ResponseMessage<ContactMessageResponse> save(@Valid @RequestBody ContactMessageRequest contactMessageRequest){
+        return contactMessageService.save(contactMessageRequest);
     }
 
 
+    @GetMapping("/getAll") // http://localhost:8080/contactMessages/getAll + GET
+    public Page<ContactMessageResponse> getAll(
+            @RequestParam(value = "page",defaultValue = "0") int page,
+            @RequestParam(value = "size",defaultValue = "10") int size,
+            @RequestParam(value = "sort",defaultValue = "dateTime")String sort,
+            @RequestParam(value = "type",defaultValue = "desc")String type
+    ){
+        return contactMessageService.getAll(page,size,sort,type);
+    }
+
+    @GetMapping("/searchByEmail") // http://localhost:8080/contactMessages/searchByEmail?email=aaa@bbb.com + GET
+    public Page<ContactMessageResponse> searchByEmail(
+            @RequestParam(value = "email") String email,
+            @RequestParam(value = "page",defaultValue = "0") int page,
+            @RequestParam(value = "size",defaultValue = "10") int size,
+            @RequestParam(value = "sort",defaultValue = "dateTime")String sort,
+            @RequestParam(value = "type",defaultValue = "desc")String type
+    ){
+        return  contactMessageService.searchByEmail(email,page,size,sort,type);
+    }
+
+    //Task : searchBySubject ***********************
+
+    @DeleteMapping("/deleteById/{contactMessageId}") // http://localhost:8080/contactMessages/deleteById/2
+    public ResponseEntity<String> deleteByIdPath(@PathVariable Long contactMessageId){
+        return ResponseEntity.ok(contactMessageService.deleteById(contactMessageId));
+    }
+
+
+    //Task2  : deleteByIdParam ***********************
 
 
 }
