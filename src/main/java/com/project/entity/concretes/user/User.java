@@ -95,4 +95,10 @@ public class User {
     )
     private List<Meet> meetList;
 
+    @OneToOne
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private UserRole userRole;
+
+
+
 }
