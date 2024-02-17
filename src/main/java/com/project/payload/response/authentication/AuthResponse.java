@@ -1,21 +1,23 @@
-package com.project.payload.response.business;
+package com.project.payload.response.authentication;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.http.HttpStatus;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
-
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ResponseMessage<E> {
+public class AuthResponse {
 
-    private E object;
-    private String message;
-    private HttpStatus httpStatus;
+    private String username;
+    private String ssn;
+    private String role;
+    private String token;
+    private String name;
+
+
 }
